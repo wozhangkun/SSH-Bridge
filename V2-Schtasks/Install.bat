@@ -1,4 +1,4 @@
-@echo off
+﻿@echo off
 
 ::»ñÈ¡¹ÜÀíÔ±È¨ÏÞ
 setlocal EnableDelayedExpansion
@@ -30,7 +30,7 @@ echo set LOCAL_PORT="%LOCAL_PORT%">> C:\Windows\YulianBridge\VARIABLE.bat
 echo set REMOTE_PORT="%REMOTE_PORT%">> C:\Windows\YulianBridge\VARIABLE.bat
 
 schtasks /delete /tn "YulianBridge" /f
-schtasks /create /tn "YulianBridge" /tr "C:\Windows\YulianBridge\YLB.bat" /sc onstart /ru "NT AUTHORITY\SYSTEM" /V1
+schtasks /create /tn "YulianBridge" /xml %~dp0\Data\YulianBridge.xml
 schtasks /run /tn "YulianBridge"
 
 
