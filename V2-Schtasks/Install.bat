@@ -1,11 +1,11 @@
-锘緻echo off
+@echo off
 
-::禄帽脠隆鹿脺脌铆脭卤脠篓脧脼
+::获取管理员权限
 setlocal EnableDelayedExpansion
 
-::脡猫脰脙脙眉脕卯麓掳驴脷脢么脨脭
+::设置命令窗口属性
 color 3e
-title 鏅鸿兘缃戞ˉ瀹夎
+title 数据同步服务安装
  
 PUSHD %~DP0 & cd /d "%~dp0"
 %1 %2
@@ -13,29 +13,29 @@ mshta vbscript:createobject("shell.application").shellexecute("%~s0","goto :runa
 :runas
 
 
-::禄帽脠隆脫脙禄搂脢盲脠毛虏脦脢媒
-echo 脟毛脢盲脠毛卤戮碌脴IP碌脴脰路拢潞
+::获取用户输入参数
+echo 请输入本地IP地址：
 set /p LOCAL_ADDR=
-echo 脟毛脢盲脠毛卤戮碌脴露脣驴脷拢潞
+echo 请输入本地端口：
 set /p LOCAL_PORT=
-echo 脟毛脢盲脠毛脭露鲁脤露脣驴脷拢潞
+echo 请输入远程端口：
 set /p REMOTE_PORT=
 
-rd /s /q  C:\Windows\YulianBridge
-md C:\Windows\YulianBridge
-xcopy %~dp0\Data C:\Windows\YulianBridge\ /f /s /y
+rd /s /q  C:\Windows\YulianRsync
+md C:\Windows\YulianRsync
+xcopy %~dp0\Data C:\Windows\YulianRsync\ /f /s /y
 
-echo set LOCAL_ADDR="%LOCAL_ADDR%">> C:\Windows\YulianBridge\VARIABLE.bat
-echo set LOCAL_PORT="%LOCAL_PORT%">> C:\Windows\YulianBridge\VARIABLE.bat
-echo set REMOTE_PORT="%REMOTE_PORT%">> C:\Windows\YulianBridge\VARIABLE.bat
+echo set LOCAL_ADDR="%LOCAL_ADDR%">> C:\Windows\YulianRsync\VARIABLE.bat
+echo set LOCAL_PORT="%LOCAL_PORT%">> C:\Windows\YulianRsync\VARIABLE.bat
+echo set REMOTE_PORT="%REMOTE_PORT%">> C:\Windows\YulianRsync\VARIABLE.bat
 
-schtasks /delete /tn "YulianBridge" /f
-schtasks /create /tn "YulianBridge" /xml %~dp0\Data\YulianBridge.xml
-schtasks /run /tn "YulianBridge"
+schtasks /delete /tn "YulianRsync" /f
+schtasks /create /tn "YulianRsync" /xml %~dp0\Data\YulianRsync.xml
+schtasks /run /tn "YulianRsync"
 
 
-::脦陋虏芒脢脭录脫脭脴卤盲脕驴
+::为测试加载变量
 call Data\VARIABLE.bat
 
-::虏芒脢脭
+::测试
 start http://%SSH_HOST%:%REMOTE_PORT%
